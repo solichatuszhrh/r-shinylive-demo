@@ -148,7 +148,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#sample-application" id="toc-sample-application" class="nav-link active" data-scroll-target="#sample-application">Sample Application</a></li>
-  <li><a href="#tutorial-using-r-shinylive-for-static-shiny-apps-in-quarto-documents" id="toc-tutorial-using-r-shinylive-for-static-shiny-apps-in-quarto-documents" class="nav-link" data-scroll-target="#tutorial-using-r-shinylive-for-static-shiny-apps-in-quarto-documents">Tutorial: Using r-shinylive for Static Shiny Apps in Quarto Documents</a>
+  <li><a href="#using-r-shinylive-for-serverless-shiny-apps-in-quarto-documents" id="toc-using-r-shinylive-for-serverless-shiny-apps-in-quarto-documents" class="nav-link" data-scroll-target="#using-r-shinylive-for-serverless-shiny-apps-in-quarto-documents">Using r-shinylive for Serverless Shiny Apps in Quarto Documents</a>
   <ul class="collapse">
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#setting-up-your-quarto-project" id="toc-setting-up-your-quarto-project" class="nav-link" data-scroll-target="#setting-up-your-quarto-project">Setting Up Your Quarto Project</a></li>
@@ -194,7 +194,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For the demo, we’re showing the source code used in Joe Cheng’s <a href="https://jcheng5.github.io/posit-conf-2023-shinylive/#/option-3-include-1">posit::conf(2023) demo</a> (Warning: Large file size, don’t open on mobile!) [<a href="https://github.com/jcheng5/posit-conf-2023-shinylive/blob/d385ad18eb0d867f25cc4721d9e8c25aeb2dfb90/slides.qmd#L299">Source Code</a>]</p>
 <section id="sample-application" class="level2">
 <h2 class="anchored" data-anchor-id="sample-application">Sample Application</h2>
-<p>We’ll be walking through the process of creating the following R ShinyLive application. Please be aware that it may take some time to load.</p>
+<p>We’ll be walking through the process of creating the following R Shinylive application. Please be aware that it may take some time to load.</p>
 <pre class="shinylive-r" data-engine="r"><code>#| standalone: true
 #| viewerHeight: 600
 library(shiny)
@@ -250,8 +250,8 @@ server &lt;- function(input, output, session) {
 # Create Shiny app ----
 shinyApp(ui = ui, server = server)</code></pre>
 </section>
-<section id="tutorial-using-r-shinylive-for-static-shiny-apps-in-quarto-documents" class="level1">
-<h1>Tutorial: Using r-shinylive for Static Shiny Apps in Quarto Documents</h1>
+<section id="using-r-shinylive-for-serverless-shiny-apps-in-quarto-documents" class="level1">
+<h1>Using r-shinylive for Serverless Shiny Apps in Quarto Documents</h1>
 <p>Are you interested in creating your own Quarto document with embedded static Shiny apps? This tutorial will guide you through the process of using the <code>r-shinylive</code> R package to achieve just that. Let’s get started!</p>
 <section id="installation" class="level2">
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
@@ -292,8 +292,7 @@ shinyApp(ui = ui, server = server)</code></pre>
 <p><strong>Step 4:</strong> To include a Shiny app directly in your Quarto file (<code>.qmd</code>), you need to add a filter key for <code>shinylive</code> at the top of the desired Quarto file. Open your Quarto file and add the following YAML header:</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filters</span><span class="kw">:</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="at">  </span><span class="kw">-</span><span class="at"> shinylive</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p><strong>Step 5:</strong> Place your Shiny application code within your Quarto file (<code>.qmd</code>) as shown in the following example:</p>
-<p>You can insert the code for a Shiny application in a code block marked with <code>{shinylive-r}</code>. Below is a skeletal example of how your code block might look:</p>
+<p><strong>Step 5:</strong> You can insert the code for a Shiny application in a code block marked with <code>{shinylive-r}</code>. Below is a skeletal example of how your code block might look:</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode md code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> "Our first r-shinylive Quarto document!"</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="an">filters:</span></span>
@@ -376,7 +375,7 @@ shinyApp(ui = ui, server = server)</code></pre>
 <span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Shiny app ----</span></span>
 <span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="ex">shinyApp</span><span class="er">(</span><span class="ex">ui</span> = ui, server = server<span class="kw">)</span></span>
 <span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can view a standalone version of Joe’s app here: &lt;R-shinylive-demo.qmd&gt;</p>
+<p>You can view a standalone version of Joe’s app here: <a href="https://github.com/coatless-quarto/r-shinylive-demo/blob/main/R-shinylive-demo.qmd">R-shinylive-demo.qmd</a></p>
 </section>
 <section id="rendering-your-quarto-document" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-your-quarto-document">Rendering Your Quarto Document</h2>
