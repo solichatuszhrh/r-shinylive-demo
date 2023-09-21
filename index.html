@@ -124,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Tutorial (Home)</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./joe-cheng-r-shinylive.html" rel="" target="">
+    <a class="nav-link" href="./R-shinylive-demo.html" rel="" target="">
  <span class="menu-text">Joe’s Shiny App</span></a>
   </li>  
   <li class="nav-item">
@@ -163,7 +163,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Interested in deploying a Shiny application for R within Quarto? Check out:</p>
+<p>Interested in deploying a Shiny application for R within Quarto without a server? Check out:</p>
 <p><a href="https://github.com/coatless-quarto/r-shinylive-demo" class="uri">https://github.com/coatless-quarto/r-shinylive-demo</a></p>
 <p>For the demo, we’re showing the source code used in Joe Cheng’s <a href="https://jcheng5.github.io/posit-conf-2023-shinylive/#/option-3-include-1">posit::conf(2023) demo</a> (Warning: Large file size, don’t open on mobile! (<a href="https://github.com/jcheng5/posit-conf-2023-shinylive/blob/d385ad18eb0d867f25cc4721d9e8c25aeb2dfb90/slides.qmd#L299">Source Code</a>)</p>
 <section id="sample-application" class="level2">
@@ -171,6 +171,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre class="shinylive-r" data-engine="r"><code>#| standalone: true
 #| viewerHeight: 600
 library(shiny)
+library(bslib)
 
 # Define UI for app that draws a histogram ----
 ui &lt;- page_sidebar(
@@ -348,8 +349,7 @@ shinyApp(ui = ui, server = server)</code></pre>
 <span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Shiny app ----</span></span>
 <span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a><span class="ex">shinyApp</span><span class="er">(</span><span class="ex">ui</span> = ui, server = server<span class="kw">)</span></span>
 <span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a><span class="kw">```</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>You can view a standalone version of Joe’s app here:</p>
-<p><a href="https://github.com/coatless-quarto/r-shinylive-demo/blob/main/joe-cheng-r-shinylive.qmd" class="uri">https://github.com/coatless-quarto/r-shinylive-demo/blob/main/joe-cheng-r-shinylive.qmd</a></p>
+<p>You can view a standalone version of Joe’s app here: &lt;R-shinylive-demo.qmd&gt;</p>
 </section>
 <section id="rendering-your-quarto-document" class="level2">
 <h2 class="anchored" data-anchor-id="rendering-your-quarto-document">Rendering Your Quarto Document</h2>

@@ -90,7 +90,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Tutorial (Home)</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./joe-cheng-r-shinylive.html" rel="" target="" aria-current="page">
+    <a class="nav-link active" href="./R-shinylive-demo.html" rel="" target="" aria-current="page">
  <span class="menu-text">Joe’s Shiny App</span></a>
   </li>  
   <li class="nav-item">
@@ -130,10 +130,11 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 <p>This document contains just the <a href="https://github.com/jcheng5/posit-conf-2023-shinylive/blob/d385ad18eb0d867f25cc4721d9e8c25aeb2dfb90/slides.qmd#L299">Shiny App source code</a> used in Joe Cheng’s <a href="https://jcheng5.github.io/posit-conf-2023-shinylive/#/option-3-include-1">posit::conf(2023) demo</a> (Warning: Large file size, don’t open on mobile!)</p>
-<p>For a detailed breakdown, please see the &lt;R-shinylive-demo.qmd&gt; file.</p>
+<p>For a detailed breakdown, please see the &lt;index.qmd&gt; file.</p>
 <pre class="shinylive-r" data-engine="r"><code>#| standalone: true
 #| viewerHeight: 600
 library(shiny)
+library(bslib)
 
 # Define UI for app that draws a histogram ----
 ui &lt;- page_sidebar(
