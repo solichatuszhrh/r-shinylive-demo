@@ -15,57 +15,108 @@ For a detailed breakdown, please see the [index.qmd](index.qmd) file.
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
-library(shiny)
-library(bslib)
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
 
-# Define UI for app that draws a histogram ----
-ui <- page_sidebar(
-  sidebar = sidebar(open = "open",
-    numericInput("n", "Sample count", 100),
-    checkboxInput("pause", "Pause", FALSE),
-  ),
-  plotOutput("plot", width=1100)
+library(shiny)
+library(eurostat)
+library(ggplot2)
+library(tidyverse)
+library(sf)
+
+# Downloading and manipulating the tabular data
+data <- get_eurostat("migr_imm8", time_format = "num") %>%
+  # Subset to NUTS-3 level
+  dplyr::filter(age == "TOTAL", sex== "T", agedef == "COMPLET") 
+names(data)[names(data) == "geo"] <- "id"
+
+# Downloading geospatial data
+geodata <- read_sf("https://raw.githubusercontent.com/eurostat/Nuts2json/master/pub/v2/2021/3035/20M/0.json")
+
+# Merge with attribute data with geodata
+maps <- inner_join(geodata, data, by="id")
+
+# Define UI for application that draws a map and line chart
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Immigration by Age and Sex"),
+
+    # Select input for the chosen country and year
+    sidebarLayout(
+        sidebarPanel(
+            selectInput("TIME_PERIOD", "Year", choices = c(1990:2021)),
+            selectInput("id",
+                        "Country",
+                        choices = list(
+                          "Austria" =	"AT",	
+                          "Belgium" =	"BE",	
+                          "Bulgaria" =	"BG",
+                          "Switzerland" = "CH",
+                          "Cyprus" =	"CY",
+                          "Czech Republic" =	"CZ",
+                          "Germany" = "DE",
+                          "Denmark" =	"DK",
+                          "Estonia" =	"EE",
+                          "Greece" = "EL",
+                          "Spain" =	"ES",
+                          "Finland"	= "FI",
+                          "France" =	"FR",
+                          "Croatia" = "HR",
+                          "Hungary" =	"HU",
+                          "Ireland" = "IE",
+                          "Iceland" = "IS",
+                          "Italy" = "IT",
+                          "Liechtenstein" = "LI",
+                          "Lithuania"	= "LT",
+                          "Luxembourg" = "LU",
+                          "Latvia" =	"LV",
+                          "North Macedonia" = "MK",
+                          "Malta"	= "MT",
+                          "Netherlands" =	"NL",
+                          "Norway" = "NO",
+                          "Poland" =	"PL",
+                          "Portugal" =	"PT",
+                          "Romania" =	"RO",
+                          "Sweden"	= "SE",
+                          "Slovenia" =	"SI",
+                          "Slovakia" =	"SK",
+                          "United Kingdom"	= "UK"))
+        ),
+
+        # Show a plot of the country and year
+        mainPanel(
+          plotOutput(outputId = "map"),
+          plotOutput(outputId = "timetrend"),
+        )
+    )
 )
 
-server <- function(input, output, session) {
-  data <- reactive({
-    input$resample
-    if (!isTRUE(input$pause)) {
-      invalidateLater(1000)
-    }
-    rnorm(input$n)
-  })
-  
-  output$plot <- renderPlot({
-    hist(data(),
-      breaks = 40,
-      xlim = c(-2, 2),
-      ylim = c(0, 1),
-      lty = "blank",
-      xlab = "value",
-      freq = FALSE,
-      main = ""
-    )
-    
-    x <- seq(from = -2, to = 2, length.out = 500)
-    y <- dnorm(x)
-    lines(x, y, lwd=1.5)
-    
-    lwd <- 5
-    abline(v=0, col="red", lwd=lwd, lty=2)
-    abline(v=mean(data()), col="blue", lwd=lwd, lty=1)
+# Define server logic required 
+server <- function(input, output) {
 
-    legend(legend = c("Normal", "Mean", "Sample mean"),
-      col = c("black", "red", "blue"),
-      lty = c(1, 2, 1),
-      lwd = c(1, lwd, lwd),
-      x = 1,
-      y = 0.9
-    )
-  }, res=140)
+  output$timetrend <- renderPlot({
+    ggplot(maps%>%filter(id == input$id),aes(x=TIME_PERIOD,y=values))+
+      geom_line(aes(colour = "blue"))+
+      labs(title = "Trend of Immigration of the EU countries", 
+           x = "Year", y = "Frequency")
+  })
+
+  output$map <- renderPlot({
+    ggplot(maps%>%filter(TIME_PERIOD == input$TIME_PERIOD))+
+      geom_sf(aes(fill=values))+
+      scale_fill_gradient(low = "red", high = "green", name = "Number of Immigrants", label = scales::comma)+
+      labs(title = "The Number of Immigrants in a Year")
+  })
 }
 
-# Create Shiny app ----
+# Run the application 
 shinyApp(ui = ui, server = server)
 ```
 
@@ -86,57 +137,108 @@ filters:
 ```{shinylive-r}
 #| standalone: true
 #| viewerHeight: 600
-library(shiny)
-library(bslib)
+#
+# This is a Shiny web application. You can run the application by clicking
+# the 'Run App' button above.
+#
+# Find out more about building applications with Shiny here:
+#
+#    http://shiny.rstudio.com/
+#
 
-# Define UI for app that draws a histogram ----
-ui <- page_sidebar(
-  sidebar = sidebar(open = "open",
-    numericInput("n", "Sample count", 100),
-    checkboxInput("pause", "Pause", FALSE),
-  ),
-  plotOutput("plot", width=1100)
+library(shiny)
+library(eurostat)
+library(ggplot2)
+library(tidyverse)
+library(sf)
+
+# Downloading and manipulating the tabular data
+data <- get_eurostat("migr_imm8", time_format = "num") %>%
+  # Subset to NUTS-3 level
+  dplyr::filter(age == "TOTAL", sex== "T", agedef == "COMPLET") 
+names(data)[names(data) == "geo"] <- "id"
+
+# Downloading geospatial data
+geodata <- read_sf("https://raw.githubusercontent.com/eurostat/Nuts2json/master/pub/v2/2021/3035/20M/0.json")
+
+# Merge with attribute data with geodata
+maps <- inner_join(geodata, data, by="id")
+
+# Define UI for application that draws a map and line chart
+ui <- fluidPage(
+
+    # Application title
+    titlePanel("Immigration by Age and Sex"),
+
+    # Select input for the chosen country and year
+    sidebarLayout(
+        sidebarPanel(
+            selectInput("TIME_PERIOD", "Year", choices = c(1990:2021)),
+            selectInput("id",
+                        "Country",
+                        choices = list(
+                          "Austria" =	"AT",	
+                          "Belgium" =	"BE",	
+                          "Bulgaria" =	"BG",
+                          "Switzerland" = "CH",
+                          "Cyprus" =	"CY",
+                          "Czech Republic" =	"CZ",
+                          "Germany" = "DE",
+                          "Denmark" =	"DK",
+                          "Estonia" =	"EE",
+                          "Greece" = "EL",
+                          "Spain" =	"ES",
+                          "Finland"	= "FI",
+                          "France" =	"FR",
+                          "Croatia" = "HR",
+                          "Hungary" =	"HU",
+                          "Ireland" = "IE",
+                          "Iceland" = "IS",
+                          "Italy" = "IT",
+                          "Liechtenstein" = "LI",
+                          "Lithuania"	= "LT",
+                          "Luxembourg" = "LU",
+                          "Latvia" =	"LV",
+                          "North Macedonia" = "MK",
+                          "Malta"	= "MT",
+                          "Netherlands" =	"NL",
+                          "Norway" = "NO",
+                          "Poland" =	"PL",
+                          "Portugal" =	"PT",
+                          "Romania" =	"RO",
+                          "Sweden"	= "SE",
+                          "Slovenia" =	"SI",
+                          "Slovakia" =	"SK",
+                          "United Kingdom"	= "UK"))
+        ),
+
+        # Show a plot of the country and year
+        mainPanel(
+          plotOutput(outputId = "map"),
+          plotOutput(outputId = "timetrend"),
+        )
+    )
 )
 
-server <- function(input, output, session) {
-  data <- reactive({
-    input$resample
-    if (!isTRUE(input$pause)) {
-      invalidateLater(1000)
-    }
-    rnorm(input$n)
-  })
-  
-  output$plot <- renderPlot({
-    hist(data(),
-      breaks = 40,
-      xlim = c(-2, 2),
-      ylim = c(0, 1),
-      lty = "blank",
-      xlab = "value",
-      freq = FALSE,
-      main = ""
-    )
-    
-    x <- seq(from = -2, to = 2, length.out = 500)
-    y <- dnorm(x)
-    lines(x, y, lwd=1.5)
-    
-    lwd <- 5
-    abline(v=0, col="red", lwd=lwd, lty=2)
-    abline(v=mean(data()), col="blue", lwd=lwd, lty=1)
+# Define server logic required 
+server <- function(input, output) {
 
-    legend(legend = c("Normal", "Mean", "Sample mean"),
-      col = c("black", "red", "blue"),
-      lty = c(1, 2, 1),
-      lwd = c(1, lwd, lwd),
-      x = 1,
-      y = 0.9
-    )
-  }, res=140)
+  output$timetrend <- renderPlot({
+    ggplot(maps%>%filter(id == input$id),aes(x=TIME_PERIOD,y=values))+
+      geom_line(aes(colour = "blue"))+
+      labs(title = "Trend of Immigration of the EU countries", 
+           x = "Year", y = "Frequency")
+  })
+
+  output$map <- renderPlot({
+    ggplot(maps%>%filter(TIME_PERIOD == input$TIME_PERIOD))+
+      geom_sf(aes(fill=values))+
+      scale_fill_gradient(low = "red", high = "green", name = "Number of Immigrants", label = scales::comma)+
+      labs(title = "The Number of Immigrants in a Year")
+  })
 }
 
-# Create Shiny app ----
+# Run the application 
 shinyApp(ui = ui, server = server)
 ```
 ````
