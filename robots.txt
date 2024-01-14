@@ -1,1 +1,1 @@
-Sitemap: https://github.com/coatless-quarto/r-shinylive-demo/sitemap.xml
+Sitemap: https://github.com/solichatuszhrh/r-shinylive-demo/sitemap.xml
